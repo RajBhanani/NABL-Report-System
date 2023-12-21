@@ -21,7 +21,7 @@ import CustomButton from "../../../components/stickers/CustomButton";
 import WhiteTextField from "../../../components/stickers/WhiteTextField";
 import WhiteDatePicker from "../../../components/stickers/WhiteDatePicker";
 import { addReport, updateSample } from "../../../redux/slices/nablSlice.js";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const GridBox = styled(Box)({
   display: "flex",
@@ -38,6 +38,7 @@ const WhiteText = styled(Typography)({
 
 const OpenSample = () => {
   const { sampleCode } = useParams();
+  const navigate = useNavigate();
 
   const [analysisStartedOn, setAnalysisStartedOn] = useState("");
   const [analysisEndedOn, setAnalysisEndedOn] = useState("");
@@ -93,11 +94,12 @@ const OpenSample = () => {
 
   const [created, setCreated] = useState();
   const [errorInCreation, setErrorInCreation] = useState();
+  const [redirectMessage, setRedirectMessage] = useState();
 
   const handleSubmit = async () => {
     try {
       const { sampleCode } = sample;
-      const { reports } = await createReport({
+      const { reports, analysisSet, isSampleReported } = await createReport({
         sampleCode,
         reportData,
         analysisStartedOn,
@@ -106,19 +108,33 @@ const OpenSample = () => {
       dispatch(
         updateSample({
           sampleCode: sampleCode,
-          field: "isReported",
-          value: true,
+          field: "analysisSet",
+          value: analysisSet,
         })
       );
-      console.log(reports);
+      setReportData({});
       reports.forEach((report) => {
         dispatch(addReport(report));
       });
+      if (isSampleReported) {
+        dispatch(
+          updateSample({
+            sampleCode: sampleCode,
+            field: "isReported",
+            value: true,
+          })
+        );
+        // navigate("/")
+        setRedirectMessage(true);
+        setTimeout(() => {
+          navigate("/nabl/analysis");
+        }, 3000);
+      }
       setCreated(reports);
-      setErrorInCreation(null)
+      setErrorInCreation(null);
     } catch (error) {
       setErrorInCreation(error?.data?.message || error.error);
-      setCreated(null)
+      setCreated(null);
     }
   };
 
@@ -279,6 +295,9 @@ const OpenSample = () => {
                       </Box>
                     );
                   })}
+                  {redirectMessage ? (
+                    <Typography variant="h6">Redirecting soon...</Typography>
+                  ) : null}
                 </Alert>
               ))
             ) : errorInCreation ? (

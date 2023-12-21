@@ -136,9 +136,12 @@ export const createReport = expressAsyncHandler(async (request, response) => {
         const remainingSets = sample.analysisSet
           .filter((ele) => !ele.isReported)
           .map((ele) => ele.name);
-        var isSampleReported = keys.every(
-          (val, index) => val === remainingSets[index]
+        console.log(remainingSets);
+        console.log(keys);
+        var isSampleReported = remainingSets.every(
+          (val, index) => val === keys[index]
         );
+        console.log(isSampleReported);
         var analysisSet = sample.analysisSet;
         const idx = analysisSet.findIndex((ele) => ele.name === set);
         analysisSet[idx] = { name: set, isReported: true };
@@ -164,7 +167,11 @@ export const createReport = expressAsyncHandler(async (request, response) => {
       throw new Error(error);
     }
   }
-  response.status(200).json({ reports: reports });
+  response.status(200).json({
+    reports: reports,
+    analysisSet: analysisSet,
+    isSampleReported: isSampleReported,
+  });
 });
 
 // GET /getReports
