@@ -20,7 +20,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomButton from "../../../components/stickers/CustomButton";
 import WhiteTextField from "../../../components/stickers/WhiteTextField";
 import WhiteDatePicker from "../../../components/stickers/WhiteDatePicker";
-import { addReport, updateSample } from "../../../redux/slices/nablSlice.js";
+import { addReport, updateSampleState } from "../../../redux/slices/nablSlice.js";
 import { useNavigate, useParams } from "react-router-dom";
 
 const GridBox = styled(Box)({
@@ -106,7 +106,7 @@ const OpenSample = () => {
         analysisEndedOn,
       }).unwrap();
       dispatch(
-        updateSample({
+        updateSampleState({
           sampleCode: sampleCode,
           field: "analysisSet",
           value: analysisSet,
@@ -118,13 +118,12 @@ const OpenSample = () => {
       });
       if (isSampleReported) {
         dispatch(
-          updateSample({
+          updateSampleState({
             sampleCode: sampleCode,
             field: "isReported",
             value: true,
           })
         );
-        // navigate("/")
         setRedirectMessage(true);
         setTimeout(() => {
           navigate("/nabl/analysis");

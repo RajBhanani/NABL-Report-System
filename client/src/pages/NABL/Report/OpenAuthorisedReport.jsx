@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Grid,
   Table,
@@ -9,9 +10,14 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "react-router-dom";
 import GeneratePDFComponent from "./GeneratePDFComponent";
+import WhiteTextField from "../../../components/stickers/WhiteTextField";
+import { useState } from "react";
+import CustomButton from "../../../components/stickers/CustomButton";
+import { useUpdateSampleMutation } from "../../../redux/slices/api slices/nablApiSlice";
+import { updateSampleState } from "../../../redux/slices/nablSlice";
 
 const OpenAuthorisedReportBox = styled(Box)({
   width: "100%",
@@ -30,6 +36,8 @@ const OpenAuthorisedReport = () => {
   const [searchParams] = useSearchParams();
   const analysisSet = searchParams.get("analysisSet");
 
+  const dispatch = useDispatch();
+
   let { samples, parameters, reports } = useSelector((state) => state.nabl);
 
   const sample = samples.filter(
@@ -46,6 +54,50 @@ const OpenAuthorisedReport = () => {
 
   samples = [];
   reports = [];
+
+  const [updateSample] = useUpdateSampleMutation();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [updateData, setUpdateData] = useState({});
+  const [updated, setUpdated] = useState();
+  const [errorInUpdate, setErrorInUpdate] = useState();
+
+  const handleChange = (field, value) => {
+    setUpdateData({
+      ...updateData,
+      [field]: value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const { message } = await updateSample({
+        sampleCode: sample.sampleCode,
+        updateData: updateData,
+      }).unwrap();
+      if (message === "Updated") {
+        const keys = Object.keys(updateData);
+        keys.forEach((key) =>
+          dispatch(
+            updateSampleState({
+              sampleCode: sample.sampleCode,
+              field: key,
+              value: updateData[key],
+            })
+          )
+        );
+        setIsEditing(false);
+        setUpdated(true);
+        setErrorInUpdate(null);
+        setTimeout(() => {
+          setUpdated(false);
+        }, 3000);
+      }
+    } catch (error) {
+      setUpdated(false);
+      setErrorInUpdate(error?.data?.message || error?.error);
+    }
+  };
 
   return (
     <OpenAuthorisedReportBox>
@@ -71,7 +123,8 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.sampleReceivedOn || "Not Provided"}
+                      {new Date(sample.sampleReceivedOn).toDateString() ||
+                        "Not Provided"}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -90,9 +143,19 @@ const OpenAuthorisedReport = () => {
                     <WhiteText align="center">Sample Detail</WhiteText>
                   </TableCell>
                   <TableCell>
-                    <WhiteText align="center">
-                      {sample.sampleDetail || "Not Provided"}
-                    </WhiteText>
+                    {!isEditing ? (
+                      <WhiteText align="center">
+                        {sample.sampleDetail || "Not Provided"}
+                      </WhiteText>
+                    ) : (
+                      <WhiteTextField
+                        label="Sample Detail"
+                        defaultValue={sample.sampleDetail || "Not Provided"}
+                        onChange={(e) =>
+                          handleChange("sampleDetail", e.target.value)
+                        }
+                      />
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -100,9 +163,19 @@ const OpenAuthorisedReport = () => {
                     <WhiteText align="center">Requested By</WhiteText>
                   </TableCell>
                   <TableCell>
-                    <WhiteText align="center">
-                      {sample.requestedBy || "Not Provided"}
-                    </WhiteText>
+                    {!isEditing ? (
+                      <WhiteText align="center">
+                        {sample.requestedBy || "Not Provided"}
+                      </WhiteText>
+                    ) : (
+                      <WhiteTextField
+                        label="Requested By"
+                        defaultValue={sample.requestedBy || "Not Provided"}
+                        onChange={(e) =>
+                          handleChange("requestedBy", e.target.value)
+                        }
+                      />
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -113,7 +186,21 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.sampleCondOrQty || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.sampleCondOrQty || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Sample Condition/Quantity"
+                          defaultValue={
+                            sample.sampleCondOrQty || "Not Provided"
+                          }
+                          onChange={(e) =>
+                            handleChange("sampleCondOrQty", e.target.value)
+                          }
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -123,7 +210,19 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.samplingBy || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.samplingBy || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Sampling By"
+                          defaultValue={sample.samplingBy || "Not Provided"}
+                          onChange={(e) =>
+                            handleChange("samplingBy", e.target.value)
+                          }
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -135,7 +234,17 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.name || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.name || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Name of Farmer/Customer"
+                          defaultValue={sample.name || "Not Provided"}
+                          onChange={(e) => handleChange("name", e.target.value)}
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -145,7 +254,19 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.address || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.address || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Address"
+                          defaultValue={sample.address || "Not Provided"}
+                          onChange={(e) =>
+                            handleChange("address", e.target.value)
+                          }
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -155,7 +276,19 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.contactNo || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.contactNo || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Contact Number"
+                          defaultValue={sample.contactNo || "Not Provided"}
+                          onChange={(e) =>
+                            handleChange("contactNo", e.target.value)
+                          }
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -165,7 +298,19 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.farmName || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.farmName || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Farm Name"
+                          defaultValue={sample.farmName || "Not Provided"}
+                          onChange={(e) =>
+                            handleChange("farmName", e.target.value)
+                          }
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -175,7 +320,19 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.surveyNo || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.surveyNo || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Survey Number"
+                          defaultValue={sample.surveyNo || "Not Provided"}
+                          onChange={(e) =>
+                            handleChange("surveyNo", e.target.value)
+                          }
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -185,7 +342,19 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.prevCrop || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.prevCrop || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Previous Crop"
+                          defaultValue={sample.prevCrop || "Not Provided"}
+                          onChange={(e) =>
+                            handleChange("prevCrop", e.target.value)
+                          }
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -195,7 +364,19 @@ const OpenAuthorisedReport = () => {
                   </TableCell>
                   <TableCell>
                     <WhiteText align="center">
-                      {sample.nextCrop || "Not Provided"}
+                      {!isEditing ? (
+                        <WhiteText align="center">
+                          {sample.nextCrop || "Not Provided"}
+                        </WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Next Crop"
+                          defaultValue={sample.nextCrop || "Not Provided"}
+                          onChange={(e) =>
+                            handleChange("nextCrop", e.target.value)
+                          }
+                        />
+                      )}
                     </WhiteText>
                   </TableCell>
                 </TableRow>
@@ -245,7 +426,57 @@ const OpenAuthorisedReport = () => {
           </TableContainer>
         </Grid>
       </Grid>
-      <GeneratePDFComponent sampleCode={sampleCode} analysisSet={analysisSet} />
+      <Box
+        style={{
+          display: "flex",
+          gap: "30px",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {updated ? (
+          <Alert severity="success">
+            <Typography>Updated</Typography>
+          </Alert>
+        ) : errorInUpdate ? (
+          <Alert severity="error">
+            <Typography>Error in updating: {errorInUpdate}</Typography>
+          </Alert>
+        ) : null}
+        {!isEditing ? (
+          <CustomButton
+            text="Edit Details"
+            color="white"
+            borderColor="white"
+            hoverBackground="rgba(255,255,255,0.3)"
+            hoverborderColor="white"
+            onClick={() => setIsEditing(true)}
+          />
+        ) : (
+          <>
+            <CustomButton
+              text="Cancel"
+              color="white"
+              borderColor="white"
+              hoverBackground="rgba(255,255,255,0.3)"
+              hoverborderColor="white"
+              onClick={() => setIsEditing(false)}
+            />
+            <CustomButton
+              text="Update Details"
+              color="white"
+              borderColor="white"
+              hoverBackground="rgba(255,255,255,0.3)"
+              hoverborderColor="white"
+              onClick={handleSubmit}
+            />
+          </>
+        )}
+        <GeneratePDFComponent
+          sampleCode={sampleCode}
+          analysisSet={analysisSet}
+        />
+      </Box>
     </OpenAuthorisedReportBox>
   );
 };

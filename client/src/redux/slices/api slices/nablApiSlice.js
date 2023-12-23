@@ -17,6 +17,13 @@ export const nablApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    updateSample: builder.mutation({
+      query: (data) => ({
+        url: `${NABL_URL}/updateSample`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
     createReport: builder.mutation({
       query: (data) => ({
         url: `${NABL_URL}/createReport`,
@@ -56,6 +63,7 @@ export const nablApiSlice = apiSlice.injectEndpoints({
 export const {
   useCreateSampleMutation,
   useGetSamplesMutation,
+  useUpdateSampleMutation,
   useCreateReportMutation,
   useGetReportsMutation,
   useUpdateReportMutation,

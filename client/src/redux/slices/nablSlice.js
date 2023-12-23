@@ -29,7 +29,7 @@ const nablSlice = createSlice({
         (sample) => sample.sampleId !== action.payload
       );
     },
-    updateSample: (state, action) => {
+    updateSampleState: (state, action) => {
       const sampleIndex = state.samples.findIndex(
         (sample) => sample.sampleCode === action.payload.sampleCode
       );
@@ -69,7 +69,7 @@ export const {
   emptyParameters,
   addSample,
   deleteSample,
-  updateSample,
+  updateSampleState,
   emptySamples,
   addReport,
   updateReportState,
