@@ -6,7 +6,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import SuperadminOnlyRoute from "./components/SuperadminOnlyRoute";
 import Home from "./pages/Home/Home";
 import Nabl from "./pages/NABL/Nabl";
-import NABLData from "./pages/NABLData";
+import NABLData from "./pages/SuperAdmin/NABLData";
 
 function App() {
   return (

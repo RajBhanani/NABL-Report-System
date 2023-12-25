@@ -23,7 +23,7 @@ const NABLCreateBox = styled(Box)({
 });
 
 const NABLReception = () => {
-  const [type, setType] = useState("Soil");
+  const [type, setType] = useState("soil");
 
   const [newCase, setNewCase] = useState({
     sampleReceivedOn: null,
@@ -188,7 +188,7 @@ const NABLReception = () => {
             hoverBackground="none"
             hoverborderColor="#725f4d"
             onClick={() => {
-              setType("Soil");
+              setType("soil");
               setNewCase({ ...newCase, analysisSet: [] });
             }}
           />
@@ -204,7 +204,7 @@ const NABLReception = () => {
             hoverBackground="none"
             hoverborderColor="#437478"
             onClick={() => {
-              setType("Water");
+              setType("water");
               setNewCase({ ...newCase, analysisSet: [] });
             }}
           />

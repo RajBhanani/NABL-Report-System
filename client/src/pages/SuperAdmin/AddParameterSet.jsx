@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const AddParameterSet = () => {
-  return (
-    <div>AddParameterSet</div>
-  )
-}
+  return <div>AddParameterSet</div>;
+};
 
-export default AddParameterSet
+export default AddParameterSet;

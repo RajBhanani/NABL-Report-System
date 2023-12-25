@@ -72,18 +72,18 @@ const NABLDataHome = () => {
     <NABLDataHomeBox>
       <Grid container spacing={4}>
         <Grid item lg={4} md={4} sm={8} xs={12}>
-          <StyledLink to="/addParameter">
+          <StyledLink to="addParameter">
             <MenuBox text="Add Parameter" />
           </StyledLink>
         </Grid>
         <Grid item lg={4} md={4} sm={8} xs={12}>
-          <StyledLink to="/addParameter">
-            <MenuBox text="Add Parameter" />
+          <StyledLink to="addParameterSet">
+            <MenuBox text="Add Parameter Set" />
           </StyledLink>
         </Grid>
         <Grid item lg={4} md={4} sm={8} xs={12}>
-          <StyledLink to="/addParameter">
-            <MenuBox text="Add Parameter" />
+          <StyledLink to="editParameter">
+            <MenuBox text="Edit Parameter" />
           </StyledLink>
         </Grid>
       </Grid>

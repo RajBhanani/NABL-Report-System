@@ -34,7 +34,7 @@ const SamplesList = () => {
         <AnalysisTypeBox>
           {samples
             .filter(
-              (sample) => sample.sampleType === "Soil" && !sample.isReported
+              (sample) => sample.sampleType === "soil" && !sample.isReported
             )
             .map((sample) => (
               <StyledLink key={sample.sampleCode} to={`${sample.sampleCode}`}>
@@ -54,7 +54,7 @@ const SamplesList = () => {
         <AnalysisTypeBox>
           {samples
             .filter(
-              (sample) => sample.sampleType === "Water" && !sample.isReported
+              (sample) => sample.sampleType === "water" && !sample.isReported
             )
             .map((sample) => (
               <StyledLink key={sample.sampleCode} to={`${sample.sampleCode}`}>

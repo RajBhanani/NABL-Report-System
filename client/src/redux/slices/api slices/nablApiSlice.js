@@ -70,6 +70,13 @@ export const nablApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    createParam: builder.mutation({
+      query: (data) => ({
+        url: `${NABL_URL}/createParam`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -84,4 +91,5 @@ export const {
   useGetParamsMutation,
   useGetNablDataMutation,
   useUpdateNablDataMutation,
+  useCreateParamMutation
 } = nablApiSlice;

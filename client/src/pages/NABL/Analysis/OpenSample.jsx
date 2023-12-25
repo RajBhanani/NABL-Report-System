@@ -53,7 +53,7 @@ const OpenSample = () => {
   const { parameterSets } = parameters;
 
   parameters =
-    sample.sampleType === "Soil"
+    sample.sampleType === "soil"
       ? parameters.soilParameters
       : parameters.waterParameters;
 

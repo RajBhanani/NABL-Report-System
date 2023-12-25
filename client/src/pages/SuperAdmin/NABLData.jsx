@@ -1,11 +1,11 @@
 import { Box, styled } from "@mui/material";
-import Navbar from "../components/Navbar";
-import theme from "../constants/theme";
+import Navbar from "../../components/Navbar";
+import theme from "../../constants/theme";
 import { Route, Routes } from "react-router-dom";
-import NABLDataHome from "./SuperAdmin/NABLDataHome";
-import AddParameter from "./SuperAdmin/AddParameter";
-import AddParameterSet from "./SuperAdmin/AddParameterSet";
-import EditParameters from "./SuperAdmin/EditParameters";
+import NABLDataHome from "./NABLDataHome";
+import AddParameter from "./AddParameter";
+import AddParameterSet from "./AddParameterSet";
+import EditParameters from "./EditParameters";
 
 const NABLDataBackgroundBox = styled(Box)({
   background:

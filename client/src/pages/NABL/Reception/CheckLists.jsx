@@ -38,7 +38,7 @@ const CheckLists = ({ type, newCase, handleCheckboxChange }) => {
   const { parameterSets } = parameters;
 
   parameters =
-    type === "Soil" ? parameters.soilParameters : parameters.waterParameters;
+    type === "soil" ? parameters.soilParameters : parameters.waterParameters;
 
   const handleSubmit = async () => {
     try {
