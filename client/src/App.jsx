@@ -6,9 +6,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import SuperadminOnlyRoute from "./components/SuperadminOnlyRoute";
 import Home from "./pages/Home/Home";
 import Nabl from "./pages/NABL/Nabl";
+import NABLData from "./pages/NABLData";
 
 function App() {
-  
   return (
     <BrowserRouter>
       <Routes>
@@ -23,6 +23,7 @@ function App() {
           {/* Allow only logged in and superadmin users */}
           <Route path="" element={<SuperadminOnlyRoute />}>
             <Route path="/register" element={<Register />} />
+            <Route path="/nablData/*" element={<NABLData />} />
           </Route>
         </Route>
       </Routes>

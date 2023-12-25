@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import StyledLink from "../../components/stickers/StyledLink";
 import MenuBox from "../../components/MenuBox";
 
-const AdminMenu = () => {
+const SuperAdminMenu = () => {
   return (
     <Grid
       container
@@ -23,4 +23,4 @@ const AdminMenu = () => {
   );
 };
 
-export default AdminMenu;
+export default SuperAdminMenu;

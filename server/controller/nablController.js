@@ -312,21 +312,44 @@ export const getParams = expressAsyncHandler(async (request, response) => {
   }
 });
 
-// POST /setId
-// Admin only
-export const setId = expressAsyncHandler(async (request, response) => {
-  const { newId } = request.body;
-  const todayYear = new Date().getFullYear();
+// GET /getNablData
+// Superadmin only
+export const getNablData = expressAsyncHandler(async (request, response) => {
   try {
-    await NABLData.updateOne(
-      { currentYear: todayYear },
-      {
-        currentId: newId,
-        currentYear: todayYear,
-      }
-    );
-    response.status(200).json({ message: `ID set to ${newId}` });
+    const nablData = (await NABLData.find({}))[0];
+    response.status(200).json({ nablData: nablData });
   } catch (error) {
     throw new Error(error);
   }
 });
+
+// PUT /updateNablData
+// Superadmin only
+export const updateNablData = expressAsyncHandler(async (request, response) => {
+  try {
+    const { updateData } = request.body;
+    await NABLData.updateOne({}, updateData);
+    response.status(200).json({ message: "Update" });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+// POST /setId
+// Admin only
+// export const setId = expressAsyncHandler(async (request, response) => {
+//   const { newId } = request.body;
+//   const todayYear = new Date().getFullYear();
+//   try {
+//     await NABLData.updateOne(
+//       { currentYear: todayYear },
+//       {
+//         currentId: newId,
+//         currentYear: todayYear,
+//       }
+//     );
+//     response.status(200).json({ message: `ID set to ${newId}` });
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// });

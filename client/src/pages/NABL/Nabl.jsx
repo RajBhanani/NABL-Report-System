@@ -1,19 +1,6 @@
 import { Box, styled } from "@mui/material";
-import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 
 import Navbar from "../../components/Navbar";
-
-import {
-  useGetParamsMutation,
-  useGetReportsMutation,
-  useGetSamplesMutation,
-} from "../../redux/slices/api slices/nablApiSlice";
-import {
-  setParameters,
-  addSample,
-  addReport,
-} from "../../redux/slices/nablSlice";
 import NABLHome from "./Home/NABLHome";
 import { Route, Routes } from "react-router-dom";
 import NABLReception from "./Reception/NABLReception";
@@ -30,33 +17,11 @@ const NABLBackgroundBox = styled(Box)({
   display: "flex",
   justifyContent: "center",
   [theme.breakpoints.down("sm")]: {
-    padding: "15vh 4vh 0vh 4vh"
-  }
+    padding: "15vh 4vh 0vh 4vh",
+  },
 });
 
 const Nabl = () => {
-  const dispatch = useDispatch();
-
-  const [getParams] = useGetParamsMutation();
-  const [getSamples] = useGetSamplesMutation();
-  const [getReports] = useGetReportsMutation();
-  const hasRunEffect = useRef(false);
-
-  const getData = async () => {
-    const { nablParameters, parameterSets } = await getParams().unwrap();
-    const { nablSamples } = await getSamples().unwrap();
-    const { nablReports } = await getReports().unwrap();
-    dispatch(setParameters({ ...nablParameters, parameterSets }));
-    nablSamples.forEach((sample) => dispatch(addSample(sample)));
-    nablReports.forEach((report) => dispatch(addReport(report)));
-  };
-
-  useEffect(() => {
-    if (!hasRunEffect.current) {
-      hasRunEffect.current = true;
-      getData();
-    }
-  }, []);
 
   return (
     <>

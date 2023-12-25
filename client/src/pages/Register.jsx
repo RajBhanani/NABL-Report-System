@@ -1,6 +1,14 @@
 import { useState } from "react";
 
-import { Box, Typography, styled } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  Typography,
+  styled,
+} from "@mui/material";
 import WhiteTextField from "../components/stickers/WhiteTextField";
 import PasswordTextField from "../components/stickers/PasswordTextField";
 import CustomButton from "../components/stickers/CustomButton";
@@ -8,6 +16,7 @@ import CustomButton from "../components/stickers/CustomButton";
 import theme from "../constants/theme";
 import { Link } from "react-router-dom";
 import { useRegisterMutation } from "../redux/slices/api slices/adminApiSlice";
+import StyledCheckbox from "../components/stickers/StyledCheckbox";
 
 const bgLink =
   "https://cdn.pixabay.com/photo/2019/11/23/04/53/dopamine-4646236_1280.jpg";
@@ -41,7 +50,7 @@ const RegisterBox = styled(Box)({
   justifyContent: "center",
   alignItems: "center",
   padding: "10px",
-  gap: "4vh",
+  gap: "3vh",
   background: "rgba(255,255,255, 0.15)",
   boxShadow: "0px 0px 10px white",
   backdropFilter: "blur(15px)",
@@ -114,13 +123,40 @@ const Register = () => {
             setPassword(e.target.value);
           }}
         />
-        <WhiteTextField
-          label="Role"
-          width="75%"
-          onChange={(e) => {
-            setRole(e.target.value);
-          }}
-        />
+        <FormControl>
+          <FormLabel>
+            <Typography color="white">Role</Typography>
+          </FormLabel>
+          <FormGroup style={{ display: "flex", flexDirection: "row" }}>
+            <FormControlLabel
+              control={
+                <StyledCheckbox
+                  checked={role === "user"}
+                  onClick={() => setRole("user")}
+                />
+              }
+              label={<Typography color="white">User</Typography>}
+            />
+            <FormControlLabel
+              control={
+                <StyledCheckbox
+                  checked={role === "admin"}
+                  onClick={() => setRole("admin")}
+                />
+              }
+              label={<Typography color="white">Admin</Typography>}
+            />
+            <FormControlLabel
+              control={
+                <StyledCheckbox
+                  checked={role === "superadmin"}
+                  onClick={() => setRole("superadmin")}
+                />
+              }
+              label={<Typography color="white">Superadmin</Typography>}
+            />
+          </FormGroup>
+        </FormControl>
         <CustomButton
           text="Register"
           color="white"

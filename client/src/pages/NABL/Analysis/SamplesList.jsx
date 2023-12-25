@@ -7,6 +7,7 @@ import StyledLink from "../../../components/stickers/StyledLink.jsx";
 
 const AnalysisTypeBox = styled(Paper)({
   display: "flex",
+  height: "55vh",
   flexDirection: "column",
   gap: "1.5vh",
   overflowY: "auto",

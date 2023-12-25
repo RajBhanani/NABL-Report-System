@@ -9,10 +9,11 @@ import CustomButton from "../../../components/stickers/CustomButton";
 import { Link } from "react-router-dom";
 
 import { companyLogo, nablLogo } from "../../../constants/images";
+import { useGetNablDataMutation } from "../../../redux/slices/api slices/nablApiSlice";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-const headerColumn = (analysisSet) => {
+const headerColumn = (analysisSet, currentCertificationNumber) => {
   let columns = [];
   const leftMargin = analysisSet !== "F/RPT/1.1" ? 40 : 130;
   const rightMargin = analysisSet !== "F/RPT/1.1" ? 5 : 0;
@@ -46,7 +47,7 @@ const headerColumn = (analysisSet) => {
         image: "nablLogo",
         width: 60,
       },
-      { text: "TC-7257", margin: [10, 10, 0, 0] },
+      { text: `TC-${currentCertificationNumber}`, margin: [10, 10, 0, 0] },
     ]);
   }
   return { columns: columns };
@@ -96,10 +97,10 @@ const table = (testResults, parameters) => {
   };
 };
 
-const createDocDefination = (sample, report, parameters) => {
+const createDocDefination = (sample, report, parameters, nablData) => {
   const docDefination = {
     content: [
-      headerColumn(report.analysisSet),
+      headerColumn(report.analysisSet, nablData.currentCertificationNumber),
       { text: "TEST REPORT", style: ["bold", "center", "underline", "bigger"] },
       "",
       {
@@ -261,7 +262,7 @@ const createDocDefination = (sample, report, parameters) => {
         ],
       },
       {
-        text: `${report.analysisSet}: Rev.01`,
+        text: `${report.analysisSet}: ${nablData.currentRevision}`,
         margin: [0, 10, 0, 0],
       },
     ],
@@ -322,9 +323,10 @@ const GeneratePDFComponent = ({ sampleCode, analysisSet }) => {
   };
 
   let { samples, parameters, reports } = useSelector((state) => state.nabl);
+  const [getNablData] = useGetNablDataMutation();
   const [pdfUrl, setPdfUrl] = useState();
 
-  const generatePdf = () => {
+  const generatePdf = async () => {
     const sample = samples.filter(
       (sample) => sample.sampleCode === sampleCode
     )[0];
@@ -342,7 +344,13 @@ const GeneratePDFComponent = ({ sampleCode, analysisSet }) => {
     );
     samples = [];
     reports = [];
-    const docDefination = createDocDefination(sample, report, parameters);
+    const { nablData } = await getNablData().unwrap();
+    const docDefination = createDocDefination(
+      sample,
+      report,
+      parameters,
+      nablData
+    );
     const pdfGenerator = pdfMake.createPdf(docDefination);
     pdfGenerator.getBlob((blob) => {
       let url = URL.createObjectURL(blob);

@@ -7,6 +7,7 @@ const nablDataSchema = mongoose.Schema({
   currentSoilParamId: { type: Number, required: true },
   currentWaterParamId: { type: Number, required: true },
   currentCertificationNumber: { type: Number, required: true },
+  currentRevision: { type: String, required: true },
 });
 
 export const NABLData = mongoose.model("nabl data", nablDataSchema);

@@ -9,10 +9,12 @@ import {
   createReport,
   createSample,
   evaluateTestData,
+  getNablData,
   getParams,
   getReports,
   getSamples,
-  setId,
+  updateNablData,
+  // setId,
   updateReport,
   updateSample,
 } from "../controller/nablController.js";
@@ -28,8 +30,10 @@ nablRouter.put("/updateReport", protect, updateReport);
 nablRouter.put("/authoriseReport", protect, authoriseReport);
 nablRouter.get("/getReports", protect, getReports);
 nablRouter.get("/getParams", protect, getParams);
+nablRouter.get("/getNablData", protect, getNablData);
 
-nablRouter.post("/setId", admin, setId);
+// nablRouter.post("/setId", admin, setId);
 nablRouter.post("/createParam", admin, createParameter);
+nablRouter.put("/updateNablData", admin, updateNablData);
 
 export default nablRouter;

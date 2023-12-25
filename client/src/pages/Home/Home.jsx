@@ -1,8 +1,19 @@
 import { Box, styled } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../../components/Navbar";
 import UserMenu from "./UserMenu";
-import AdminMenu from "./AdminMenu";
+import SuperAdminMenu from "./SuperAdminMenu";
+import {
+  useGetParamsMutation,
+  useGetReportsMutation,
+  useGetSamplesMutation,
+} from "../../redux/slices/api slices/nablApiSlice";
+import { useEffect, useRef } from "react";
+import {
+  addReport,
+  addSample,
+  setParameters,
+} from "../../redux/slices/nablSlice";
 
 const HomeBackgroundBox = styled(Box)({
   background:
@@ -12,12 +23,35 @@ const HomeBackgroundBox = styled(Box)({
 });
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  const [getParams] = useGetParamsMutation();
+  const [getSamples] = useGetSamplesMutation();
+  const [getReports] = useGetReportsMutation();
+  const hasRunEffect = useRef(false);
+
+  const getData = async () => {
+    const { nablParameters, parameterSets } = await getParams().unwrap();
+    const { nablSamples } = await getSamples().unwrap();
+    const { nablReports } = await getReports().unwrap();
+    dispatch(setParameters({ ...nablParameters, parameterSets }));
+    nablSamples.forEach((sample) => dispatch(addSample(sample)));
+    nablReports.forEach((report) => dispatch(addReport(report)));
+  };
+
+  useEffect(() => {
+    if (!hasRunEffect.current) {
+      hasRunEffect.current = true;
+      getData();
+    }
+  }, []);
+
   const { role } = useSelector((state) => state.auth).userInfo;
   return (
     <>
       <Navbar />
       <HomeBackgroundBox>
-        {role === "superadmin" ? <AdminMenu /> : <UserMenu />}
+        {role === "superadmin" ? <SuperAdminMenu /> : <UserMenu />}
       </HomeBackgroundBox>
     </>
   );
