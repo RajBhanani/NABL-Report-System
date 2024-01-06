@@ -94,7 +94,8 @@ const CheckLists = ({ type, newCase, handleCheckboxChange }) => {
           <FormLabel
             style={{ color: "white", fontSize: "20px", marginBottom: "20px" }}
           >
-            {type} Analysis Set
+            {type[0].toUpperCase()}
+            {type.slice(1)} Analysis Set
           </FormLabel>
           <FormGroup style={{ color: "white" }}>
             {parameterSets

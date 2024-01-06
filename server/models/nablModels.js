@@ -54,8 +54,31 @@ export const NABLWaterParameters = mongoose.model(
 
 const nablParameterSetsSchema = mongoose.Schema({
   name: { type: String, required: true },
-  type: { type: String, required: true },
-  parameters: { type: [Number], required: true },
+  type: {
+    type: String,
+    enum: ["soil", "water"],
+    required: true,
+  },
+  parameters: {
+    type: [Number],
+    validate: {
+      validator: async function (value) {
+        if (value.length === 0) return false;
+        const { currentSoilParamId, currentWaterParamId } = (
+          await NABLData.find({})
+        )[0];
+        if (this.type === "soil") {
+          return !Boolean(value.filter((id) => id > currentSoilParamId).length);
+        } else {
+          return !Boolean(
+            value.filter((id) => id > currentWaterParamId).length
+          );
+        }
+      },
+      message: "Empty or unacceptable parameters",
+    },
+    required: true,
+  },
 });
 
 export const NABLParameterSets = mongoose.model(
@@ -67,7 +90,7 @@ const sampleSchema = mongoose.Schema({
   sampleId: { type: Number },
   sampleCode: { type: String },
   sampleReceivedOn: { type: Date },
-  sampleType: { type: String },
+  sampleType: { type: String, enum: ["soil", "water"], required: true },
   sampleDetail: { type: String },
   analysisSet: {
     type: [Object],
@@ -137,13 +160,22 @@ export const Sample = mongoose.model("samples", sampleSchema);
 
 const reportSchema = mongoose.Schema({
   ulr: { type: String },
-  sampleCode: { type: String, required: true },
+  sampleCode: {
+    type: String,
+    validate: {
+      validator: async function (value) {
+        const sample = await Sample.findOne({ sampleCode: value });
+        return sample;
+      },
+      message: "Invalid sample code",
+    },
+    required: true,
+  },
   analysisSet: {
     type: String,
     required: true,
     validate: {
       validator: async function (value) {
-        // const parameterSets = await NABLParameterSets.find({}).select("name");
         const sampleSets = await Sample.findOne({
           sampleCode: this.sampleCode,
         }).select("analysisSet");

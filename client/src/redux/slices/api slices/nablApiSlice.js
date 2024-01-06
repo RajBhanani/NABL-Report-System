@@ -51,12 +51,6 @@ export const nablApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getParams: builder.mutation({
-      query: () => ({
-        url: `${NABL_URL}/getParams`,
-        method: "GET",
-      }),
-    }),
     getNablData: builder.mutation({
       query: () => ({
         url: `${NABL_URL}/getNablData`,
@@ -77,6 +71,19 @@ export const nablApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getParams: builder.mutation({
+      query: () => ({
+        url: `${NABL_URL}/getParams`,
+        method: "GET",
+      }),
+    }),
+    createParamSet: builder.mutation({
+      query: (data) => ({
+        url: `${NABL_URL}/createParamSet`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -88,8 +95,9 @@ export const {
   useGetReportsMutation,
   useUpdateReportMutation,
   useAuthoriseReportMutation,
-  useGetParamsMutation,
   useGetNablDataMutation,
   useUpdateNablDataMutation,
-  useCreateParamMutation
+  useCreateParamMutation,
+  useGetParamsMutation,
+  useCreateParamSetMutation,
 } = nablApiSlice;

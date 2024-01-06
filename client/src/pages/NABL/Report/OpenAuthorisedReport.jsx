@@ -150,7 +150,7 @@ const OpenAuthorisedReport = () => {
                     ) : (
                       <WhiteTextField
                         label="Sample Detail"
-                        defaultValue={sample.sampleDetail || "Not Provided"}
+                        defaultValue={sample.sampleDetail || ""}
                         onChange={(e) =>
                           handleChange("sampleDetail", e.target.value)
                         }
@@ -170,7 +170,7 @@ const OpenAuthorisedReport = () => {
                     ) : (
                       <WhiteTextField
                         label="Requested By"
-                        defaultValue={sample.requestedBy || "Not Provided"}
+                        defaultValue={sample.requestedBy || ""}
                         onChange={(e) =>
                           handleChange("requestedBy", e.target.value)
                         }
@@ -193,9 +193,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Sample Condition/Quantity"
-                          defaultValue={
-                            sample.sampleCondOrQty || "Not Provided"
-                          }
+                          defaultValue={sample.sampleCondOrQty || ""}
                           onChange={(e) =>
                             handleChange("sampleCondOrQty", e.target.value)
                           }
@@ -217,7 +215,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Sampling By"
-                          defaultValue={sample.samplingBy || "Not Provided"}
+                          defaultValue={sample.samplingBy || ""}
                           onChange={(e) =>
                             handleChange("samplingBy", e.target.value)
                           }
@@ -241,7 +239,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Name of Farmer/Customer"
-                          defaultValue={sample.name || "Not Provided"}
+                          defaultValue={sample.name || ""}
                           onChange={(e) => handleChange("name", e.target.value)}
                         />
                       )}
@@ -261,7 +259,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Address"
-                          defaultValue={sample.address || "Not Provided"}
+                          defaultValue={sample.address || ""}
                           onChange={(e) =>
                             handleChange("address", e.target.value)
                           }
@@ -283,7 +281,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Contact Number"
-                          defaultValue={sample.contactNo || "Not Provided"}
+                          defaultValue={sample.contactNo || ""}
                           onChange={(e) =>
                             handleChange("contactNo", e.target.value)
                           }
@@ -305,7 +303,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Farm Name"
-                          defaultValue={sample.farmName || "Not Provided"}
+                          defaultValue={sample.farmName || ""}
                           onChange={(e) =>
                             handleChange("farmName", e.target.value)
                           }
@@ -327,7 +325,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Survey Number"
-                          defaultValue={sample.surveyNo || "Not Provided"}
+                          defaultValue={sample.surveyNo || ""}
                           onChange={(e) =>
                             handleChange("surveyNo", e.target.value)
                           }
@@ -349,7 +347,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Previous Crop"
-                          defaultValue={sample.prevCrop || "Not Provided"}
+                          defaultValue={sample.prevCrop || ""}
                           onChange={(e) =>
                             handleChange("prevCrop", e.target.value)
                           }
@@ -371,7 +369,7 @@ const OpenAuthorisedReport = () => {
                       ) : (
                         <WhiteTextField
                           label="Next Crop"
-                          defaultValue={sample.nextCrop || "Not Provided"}
+                          defaultValue={sample.nextCrop || ""}
                           onChange={(e) =>
                             handleChange("nextCrop", e.target.value)
                           }
@@ -457,17 +455,21 @@ const OpenAuthorisedReport = () => {
             <CustomButton
               text="Cancel"
               color="white"
+              background="red"
               borderColor="white"
-              hoverBackground="rgba(255,255,255,0.3)"
-              hoverborderColor="white"
+              hoverColor="red"
+              hoverBackground="none"
+              hoverborderColor="red"
               onClick={() => setIsEditing(false)}
             />
             <CustomButton
               text="Update Details"
               color="white"
+              background="green"
               borderColor="white"
-              hoverBackground="rgba(255,255,255,0.3)"
-              hoverborderColor="white"
+              hoverColor="green"
+              hoverBackground="none"
+              hoverborderColor="green"
               onClick={handleSubmit}
             />
           </>

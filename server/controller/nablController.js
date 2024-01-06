@@ -112,6 +112,8 @@ export const evaluateTestData = expressAsyncHandler(
 export const createReport = expressAsyncHandler(async (request, response) => {
   const { sampleCode, reportData, analysisStartedOn, analysisEndedOn } =
     request.body;
+  if (Object.keys(reportData).length === 0)
+    response.status(400).json({ message: "No data provided" });
   const keys = Object.keys(reportData);
   const reports = [];
   for (let index = 0; index < keys.length; index++) {
@@ -238,6 +240,29 @@ export const authoriseReport = expressAsyncHandler(
   }
 );
 
+// GET /getNablData
+// Superadmin only
+export const getNablData = expressAsyncHandler(async (request, response) => {
+  try {
+    const nablData = (await NABLData.find({}))[0];
+    response.status(200).json({ nablData: nablData });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+// PUT /updateNablData
+// Superadmin only
+export const updateNablData = expressAsyncHandler(async (request, response) => {
+  try {
+    const { updateData } = request.body;
+    await NABLData.updateOne({}, updateData);
+    response.status(200).json({ message: "Update" });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 // POST /createParam
 // Admin only
 export const createParameter = expressAsyncHandler(
@@ -250,6 +275,13 @@ export const createParameter = expressAsyncHandler(
       paramFormula,
       paramTestMethod,
     } = request.body;
+    if (paramType !== "soil" && paramType !== "water") {
+      return response.status(400).json({ message: "Invalid type" });
+    } else if (paramVariables.length > 0 && !paramFormula) {
+      return response.status(400).json({ message: "Please enter formula" });
+    } else if (paramFormula && paramVariables.length === 0) {
+      return response.status(400).json({ message: "Please enter variables" });
+    }
     var coll, updateField;
     if (paramType === "soil") {
       coll = NABLSoilParameters;
@@ -312,28 +344,19 @@ export const getParams = expressAsyncHandler(async (request, response) => {
   }
 });
 
-// GET /getNablData
-// Superadmin only
-export const getNablData = expressAsyncHandler(async (request, response) => {
-  try {
-    const nablData = (await NABLData.find({}))[0];
-    response.status(200).json({ nablData: nablData });
-  } catch (error) {
-    throw new Error(error);
+// POST /createParameterSet
+// Admin only
+export const createParameterSet = expressAsyncHandler(
+  async (request, response) => {
+    const { name, type, parameters } = request.body;
+    try {
+      await NABLParameterSets.create({ name, type, parameters });
+      response.status(201).json({ message: "Created" });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
-});
-
-// PUT /updateNablData
-// Superadmin only
-export const updateNablData = expressAsyncHandler(async (request, response) => {
-  try {
-    const { updateData } = request.body;
-    await NABLData.updateOne({}, updateData);
-    response.status(200).json({ message: "Update" });
-  } catch (error) {
-    throw new Error(error);
-  }
-});
+);
 
 // POST /setId
 // Admin only

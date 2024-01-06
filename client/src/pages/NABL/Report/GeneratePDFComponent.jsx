@@ -131,7 +131,7 @@ const createDocDefination = (sample, report, parameters, nablData) => {
               `ULR: ${report.ulr}`,
             ],
             [
-              `* Sample Type: ${sample.sampleType}`,
+              `* Sample Type: ${sample.sampleType[0].toUpperCase()}${sample.sampleType.slice(1)}`,
               `* Name of Farmer/Customer: ${sample.name || "--"}`,
             ],
             [

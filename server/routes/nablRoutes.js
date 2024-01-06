@@ -6,6 +6,7 @@ import { admin } from "../middleware/adminMiddleware.js";
 import {
   authoriseReport,
   createParameter,
+  createParameterSet,
   createReport,
   createSample,
   evaluateTestData,
@@ -35,5 +36,6 @@ nablRouter.get("/getNablData", protect, getNablData);
 // nablRouter.post("/setId", admin, setId);
 nablRouter.post("/createParam", admin, createParameter);
 nablRouter.put("/updateNablData", admin, updateNablData);
+nablRouter.post("/createParamSet", admin, createParameterSet);
 
 export default nablRouter;
