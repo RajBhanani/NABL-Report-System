@@ -11,13 +11,13 @@ import {
   FormLabel,
 } from "@mui/material";
 
-import { useCreateSampleMutation } from "../../../redux/slices/api slices/nablApiSlice";
+import { useCreateSampleMutation } from "../../../../redux/slices/api slices/nablApiSlice.js";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addSample } from "../../../redux/slices/nablSlice.js";
+import { addSample } from "../../../../redux/slices/nablSlice.js";
 
-import StyledCheckbox from "../../../components/stickers/StyledCheckbox";
-import CustomButton from "../../../components/stickers/CustomButton";
+import StyledCheckbox from "../../../../components/stickers/StyledCheckbox.jsx";
+import CustomButton from "../../../../components/stickers/CustomButton.jsx";
 
 const CheckLists = ({ type, newCase, handleCheckboxChange }) => {
   CheckLists.propTypes = {

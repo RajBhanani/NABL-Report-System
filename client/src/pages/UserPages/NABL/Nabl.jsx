@@ -1,13 +1,13 @@
 import { Box, styled } from "@mui/material";
 
-import Navbar from "../../components/Navbar";
+import Navbar from "../../../components/Navbar";
 import NABLHome from "./Home/NABLHome";
 import { Route, Routes } from "react-router-dom";
 import NABLReception from "./Reception/NABLReception";
 import NABLAnalysis from "./Analysis/NABLAnalysis";
 import NABLReport from "./Report/NABLReport";
 
-import theme from "../../constants/theme";
+import theme from "../../../constants/theme";
 
 const NABLBackgroundBox = styled(Box)({
   background:

@@ -1,9 +1,9 @@
 import { Grid, Paper, Typography, styled } from "@mui/material";
-import ListBox from "../../../components/stickers/ListBox.jsx";
+import ListBox from "../../../../components/stickers/ListBox.jsx";
 import { useSelector } from "react-redux";
 
-import theme from "../../../constants/theme.js";
-import StyledLink from "../../../components/stickers/StyledLink.jsx";
+import theme from "../../../../constants/theme.js";
+import StyledLink from "../../../../components/stickers/StyledLink.jsx";
 
 const ReportTypeBox = styled(Paper)({
   display: "flex",

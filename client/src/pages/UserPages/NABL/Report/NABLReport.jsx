@@ -4,7 +4,7 @@ import OpenUnauthorisedReport from "./OpenUnauthorisedReport";
 import OpenAuthorisedReport from "./OpenAuthorisedReport";
 import { Route, Routes } from "react-router-dom";
 
-import theme from "../../../constants/theme";
+import theme from "../../../../constants/theme";
 
 const NABLReportBox = styled(Box)({
   width: "85%",

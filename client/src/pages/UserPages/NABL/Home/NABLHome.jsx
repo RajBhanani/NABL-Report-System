@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
-import StyledLink from "../../../components/stickers/StyledLink";
-import MenuBox from "../../../components/MenuBox";
+import StyledLink from "../../../../components/stickers/StyledLink";
+import MenuBox from "../../../../components/MenuBox";
 
 const NABLHome = () => {
   return (

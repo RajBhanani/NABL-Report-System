@@ -8,14 +8,14 @@ import {
   styled,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import CustomButton from "../../../components/stickers/CustomButton";
-import WhiteTextField from "../../../components/stickers/WhiteTextField";
+import CustomButton from "../../../../components/stickers/CustomButton";
+import WhiteTextField from "../../../../components/stickers/WhiteTextField";
 import { useState } from "react";
 import {
   useAuthoriseReportMutation,
   useUpdateReportMutation,
-} from "../../../redux/slices/api slices/nablApiSlice";
-import { updateReportState } from "../../../redux/slices/nablSlice";
+} from "../../../../redux/slices/api slices/nablApiSlice";
+import { updateReportState } from "../../../../redux/slices/nablSlice";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 

@@ -5,11 +5,11 @@ import { useSelector } from "react-redux";
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import CustomButton from "../../../components/stickers/CustomButton";
+import CustomButton from "../../../../components/stickers/CustomButton";
 import { Link } from "react-router-dom";
 
-import { companyLogo, nablLogo } from "../../../constants/images";
-import { useGetNablDataMutation } from "../../../redux/slices/api slices/nablApiSlice";
+import { companyLogo, nablLogo } from "../../../../constants/images";
+import { useGetNablDataMutation } from "../../../../redux/slices/api slices/nablApiSlice";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 

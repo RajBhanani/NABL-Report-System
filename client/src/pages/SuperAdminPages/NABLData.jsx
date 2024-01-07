@@ -2,10 +2,10 @@ import { Box, styled } from "@mui/material";
 import Navbar from "../../components/Navbar";
 import theme from "../../constants/theme";
 import { Route, Routes } from "react-router-dom";
-import NABLDataHome from "./NABLDataHome";
-import AddParameter from "./AddParameter";
-import AddParameterSet from "./AddParameterSet";
-import EditParameters from "./EditParameters";
+import NABLDataHome from "./Home/NABLDataHome";
+import AddParameter from "./Add Parameter/AddParameter";
+import AddParameterSet from "./Add Parameter Set/AddParameterSet";
+import EditParameters from "./Edit Parameters/EditParameters";
 
 const NABLDataBackgroundBox = styled(Box)({
   background:
@@ -28,7 +28,7 @@ const NABLData = () => {
           <Route path="/" element={<NABLDataHome />} />
           <Route path="/addParameter" element={<AddParameter />} />
           <Route path="/addParameterSet" element={<AddParameterSet />} />
-          <Route path="/editParameters" element={<EditParameters />} />
+          <Route path="/editParameters/*" element={<EditParameters />} />
         </Routes>
       </NABLDataBackgroundBox>
     </>

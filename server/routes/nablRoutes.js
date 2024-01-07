@@ -15,6 +15,7 @@ import {
   getReports,
   getSamples,
   updateNablData,
+  updateParameter,
   // setId,
   updateReport,
   updateSample,
@@ -34,8 +35,9 @@ nablRouter.get("/getParams", protect, getParams);
 nablRouter.get("/getNablData", protect, getNablData);
 
 // nablRouter.post("/setId", admin, setId);
-nablRouter.post("/createParam", admin, createParameter);
 nablRouter.put("/updateNablData", admin, updateNablData);
+nablRouter.post("/createParam", admin, createParameter);
+nablRouter.put("/updateParam", admin, updateParameter);
 nablRouter.post("/createParamSet", admin, createParameterSet);
 
 export default nablRouter;

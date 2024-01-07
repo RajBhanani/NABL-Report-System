@@ -71,7 +71,9 @@ export const createSample = expressAsyncHandler(async (request, response) => {
 export const updateSample = expressAsyncHandler(async (request, response) => {
   const { sampleCode, updateData } = request.body;
   try {
-    await Sample.updateOne({ sampleCode: sampleCode }, updateData);
+    await Sample.updateOne({ sampleCode: sampleCode }, updateData, {
+      runValidators: true,
+    });
     response.status(200).json({ message: "Updated" });
   } catch (error) {
     throw new Error(error);
@@ -151,12 +153,12 @@ export const createReport = expressAsyncHandler(async (request, response) => {
         if (isSampleReported) {
           await Sample.updateOne(
             { sampleCode: sampleCode },
-            { isReported: true, analysisSet: analysisSet }
+            { isReported: true, analysisSet: analysisSet },
           );
         } else {
           await Sample.updateOne(
             { sampleCode: sampleCode },
-            { analysisSet: analysisSet }
+            { analysisSet: analysisSet },
           );
         }
       } catch (error) {
@@ -211,7 +213,8 @@ export const updateReport = expressAsyncHandler(async (request, response) => {
           analysisSet: analysisSet,
           isAuthorised: false,
         },
-        { testResults: testResults }
+        { testResults: testResults },
+        { runValidators: true }
       );
       response.status(200).json({ testResults: testResults });
     }
@@ -343,6 +346,48 @@ export const getParams = expressAsyncHandler(async (request, response) => {
     throw new Error(error);
   }
 });
+
+// PUT /updateParameter
+// Admin only
+export const updateParameter = expressAsyncHandler(
+  async (request, response) => {
+    const {
+      paramId,
+      paramType,
+      paramName,
+      paramUnit,
+      paramTestMethod,
+      paramFormula,
+      paramVariables,
+    } = request.body;
+    if (
+      (paramFormula && paramVariables.length === 0) ||
+      (!paramFormula && paramVariables.length > 0)
+    )
+      return response.status(400).json({
+        message:
+          "Found either formula or variables but not the other. Please enter both",
+      });
+    try {
+      const coll =
+        paramType === "soil" ? NABLSoilParameters : NABLWaterParameters;
+      await coll.updateOne(
+        { paramId: paramId },
+        {
+          paramName: paramName,
+          paramUnit: paramUnit,
+          paramTestMethod: paramTestMethod,
+          paramFormula: paramFormula,
+          paramVariables: paramVariables,
+        },
+        { runValidators: true }
+      );
+      response.status(200).json({ message: "Updated" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+);
 
 // POST /createParameterSet
 // Admin only

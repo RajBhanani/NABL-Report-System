@@ -3,7 +3,7 @@ import SamplesList from "./SamplesList";
 import OpenSample from "./OpenSample";
 import { Route, Routes } from "react-router-dom";
 
-import theme from "../../../constants/theme";
+import theme from "../../../../constants/theme";
 
 const NABLAnalysisBox = styled(Box)({
   width: "85%",

@@ -13,11 +13,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "react-router-dom";
 import GeneratePDFComponent from "./GeneratePDFComponent";
-import WhiteTextField from "../../../components/stickers/WhiteTextField";
+import WhiteTextField from "../../../../components/stickers/WhiteTextField";
 import { useState } from "react";
-import CustomButton from "../../../components/stickers/CustomButton";
-import { useUpdateSampleMutation } from "../../../redux/slices/api slices/nablApiSlice";
-import { updateSampleState } from "../../../redux/slices/nablSlice";
+import CustomButton from "../../../../components/stickers/CustomButton";
+import { useUpdateSampleMutation } from "../../../../redux/slices/api slices/nablApiSlice";
+import { updateSampleState } from "../../../../redux/slices/nablSlice";
 
 const OpenAuthorisedReportBox = styled(Box)({
   width: "100%",

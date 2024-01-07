@@ -12,13 +12,13 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import WhiteTextField from "../../components/stickers/WhiteTextField";
-import StyledCheckBox from "../../components/stickers/StyledCheckBox";
-import CustomButton from "../../components/stickers/CustomButton";
-import theme from "../../constants/theme";
-import StyledRadio from "../../components/stickers/StyledRadio";
+import WhiteTextField from "../../../components/stickers/WhiteTextField";
+import StyledCheckBox from "../../../components/stickers/StyledCheckBox";
+import CustomButton from "../../../components/stickers/CustomButton";
+import theme from "../../../constants/theme";
+import StyledRadio from "../../../components/stickers/StyledRadio";
 import { useSelector } from "react-redux";
-import { useCreateParamSetMutation } from "../../redux/slices/api slices/nablApiSlice";
+import { useCreateParamSetMutation } from "../../../redux/slices/api slices/nablApiSlice";
 
 const AddParameterSetBox = styled(Box)({
   height: "70vh",

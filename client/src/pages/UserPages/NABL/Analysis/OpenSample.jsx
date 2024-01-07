@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useCreateReportMutation } from "../../../redux/slices/api slices/nablApiSlice";
 import {
   Accordion,
   AccordionDetails,
@@ -16,11 +15,14 @@ import {
   styled,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-import CustomButton from "../../../components/stickers/CustomButton";
-import WhiteTextField from "../../../components/stickers/WhiteTextField";
-import WhiteDatePicker from "../../../components/stickers/WhiteDatePicker";
-import { addReport, updateSampleState } from "../../../redux/slices/nablSlice.js";
+import CustomButton from "../../../../components/stickers/CustomButton";
+import WhiteTextField from "../../../../components/stickers/WhiteTextField";
+import WhiteDatePicker from "../../../../components/stickers/WhiteDatePicker";
+import {
+  addReport,
+  updateSampleState,
+} from "../../../../redux/slices/nablSlice";
+import { useCreateReportMutation } from "../../../../redux/slices/api slices/nablApiSlice";
 import { useNavigate, useParams } from "react-router-dom";
 
 const GridBox = styled(Box)({

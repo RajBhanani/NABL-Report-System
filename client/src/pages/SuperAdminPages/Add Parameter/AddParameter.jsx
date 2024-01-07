@@ -9,11 +9,11 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import WhiteTextField from "../../components/stickers/WhiteTextField";
-import CustomButton from "../../components/stickers/CustomButton";
-import theme from "../../constants/theme";
-import { useCreateParamMutation } from "../../redux/slices/api slices/nablApiSlice";
-import StyledRadio from "../../components/stickers/StyledRadio";
+import WhiteTextField from "../../../components/stickers/WhiteTextField";
+import CustomButton from "../../../components/stickers/CustomButton";
+import theme from "../../../constants/theme";
+import { useCreateParamMutation } from "../../../redux/slices/api slices/nablApiSlice";
+import StyledRadio from "../../../components/stickers/StyledRadio";
 
 const AddParameterBox = styled(Box)({
   height: "80vh",

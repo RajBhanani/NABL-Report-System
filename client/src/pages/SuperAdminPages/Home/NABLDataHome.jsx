@@ -10,15 +10,15 @@ import {
   Alert,
   TableContainer,
 } from "@mui/material";
-import StyledLink from "../../components/stickers/StyledLink";
-import MenuBox from "../../components/MenuBox";
+import StyledLink from "../../../components/stickers/StyledLink";
+import MenuBox from "../../../components/MenuBox";
 import { useState } from "react";
 import {
   useGetNablDataMutation,
   useUpdateNablDataMutation,
-} from "../../redux/slices/api slices/nablApiSlice";
-import CustomButton from "../../components/stickers/CustomButton";
-import WhiteTextField from "../../components/stickers/WhiteTextField";
+} from "../../../redux/slices/api slices/nablApiSlice";
+import CustomButton from "../../../components/stickers/CustomButton";
+import WhiteTextField from "../../../components/stickers/WhiteTextField";
 
 const NABLDataHomeBox = styled(Box)({
   width: "100%",
@@ -82,7 +82,7 @@ const NABLDataHome = () => {
           </StyledLink>
         </Grid>
         <Grid item lg={4} md={4} sm={8} xs={12}>
-          <StyledLink to="editParameter">
+          <StyledLink to="editParameters">
             <MenuBox text="Edit Parameter" />
           </StyledLink>
         </Grid>
