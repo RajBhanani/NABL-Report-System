@@ -3,15 +3,24 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import * as pdfMake from "pdfmake/build/pdfmake";
 import CustomButton from "../../../../components/stickers/CustomButton";
 import { Link } from "react-router-dom";
 
 import { companyLogo, nablLogo } from "../../../../constants/images";
 import { useGetNablDataMutation } from "../../../../redux/slices/api slices/nablApiSlice";
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+const pdfFonts = {
+  Roboto: {
+    normal:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Regular.ttf",
+    bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Medium.ttf",
+    italics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-Italic.ttf",
+    bolditalics:
+      "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-MediumItalic.ttf",
+  },
+};
 
 const headerColumn = (analysisSet, currentCertificationNumber) => {
   let columns = [];
@@ -131,7 +140,9 @@ const createDocDefination = (sample, report, parameters, nablData) => {
               `ULR: ${report.ulr}`,
             ],
             [
-              `* Sample Type: ${sample.sampleType[0].toUpperCase()}${sample.sampleType.slice(1)}`,
+              `* Sample Type: ${sample.sampleType[0].toUpperCase()}${sample.sampleType.slice(
+                1
+              )}`,
               `* Name of Farmer/Customer: ${sample.name || "--"}`,
             ],
             [
@@ -351,11 +362,7 @@ const GeneratePDFComponent = ({ sampleCode, analysisSet }) => {
       parameters,
       nablData
     );
-    const pdfGenerator = pdfMake.createPdf(docDefination);
-    pdfGenerator.getBlob((blob) => {
-      let url = URL.createObjectURL(blob);
-      setPdfUrl(url);
-    });
+    pdfMake.createPdf(docDefination, null, pdfFonts).open();
   };
 
   return (
@@ -368,25 +375,13 @@ const GeneratePDFComponent = ({ sampleCode, analysisSet }) => {
       }}
     >
       <CustomButton
-        text="Generate PDF"
+        text="Open PDF"
         color="white"
         borderColor="white"
         hoverBackground="rgba(255,255,255,0.3)"
         hoverborderColor="white"
         onClick={generatePdf}
       />
-      {pdfUrl && (
-        <Link to={pdfUrl} target="_blank" rel="noreferrer noopener">
-          <CustomButton
-            text="Open PDF"
-            color="white"
-            borderColor="white"
-            hoverBackground="rgba(255,255,255,0.3)"
-            hoverborderColor="white"
-            onClick={() => null}
-          />
-        </Link>
-      )}
     </Box>
   );
 };
