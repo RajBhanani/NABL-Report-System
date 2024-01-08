@@ -3,7 +3,17 @@ import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  email: {
+    type: String,
+    validate: {
+      validator: function (value) {
+        return value.endsWith("@sumichem.co.in");
+      },
+      message: "Not a valid email",
+    },
+    required: true,
+    unique: true,
+  },
   password: { type: String, required: true },
   role: { type: String, required: true, enum: ["user", "admin", "superadmin"] },
 });

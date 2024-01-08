@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, styled } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useLogoutMutation } from "../redux/slices/api slices/usersApiSlice";
 import { deleteCredentials } from "../redux/slices/authSlice";
@@ -8,6 +8,14 @@ import {
   emptySamples,
   emptyReports,
 } from "../redux/slices/nablSlice";
+
+const LogOutBox = styled(Box)({
+  display: "flex",
+  height: "100vh",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "black"
+})
 
 const Logout = () => {
   const dispatch = useDispatch();
@@ -27,11 +35,11 @@ const Logout = () => {
     }
   };
   return (
-    <Box>
+    <LogOutBox>
       <Button variant="contained" onClick={handleLogout}>
         Logout
       </Button>
-    </Box>
+    </LogOutBox>
   );
 };
 

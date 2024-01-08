@@ -192,17 +192,35 @@ const NABLDataHome = () => {
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <WhiteText>Current Sample ID</WhiteText>
+                      <WhiteText>Current Soil Sample ID</WhiteText>
                     </TableCell>
                     <TableCell>
                       {!isEditing ? (
-                        <WhiteText>{currNablData.currentId}</WhiteText>
+                        <WhiteText>{currNablData.currentSoilId}</WhiteText>
                       ) : (
                         <WhiteTextField
                           label="Current Sample ID"
-                          defaultValue={String(currNablData.currentId)}
+                          defaultValue={String(currNablData.currentSoilId)}
                           onChange={(e) =>
-                            handleChange("currentId", Number(e.target.value))
+                            handleChange("currentSoilId", Number(e.target.value))
+                          }
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <WhiteText>Current Water Sample ID</WhiteText>
+                    </TableCell>
+                    <TableCell>
+                      {!isEditing ? (
+                        <WhiteText>{currNablData.currentWaterId}</WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Current Sample ID"
+                          defaultValue={String(currNablData.currentWaterId)}
+                          onChange={(e) =>
+                            handleChange("currentWaterId", Number(e.target.value))
                           }
                         />
                       )}

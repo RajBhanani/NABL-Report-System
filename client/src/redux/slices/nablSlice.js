@@ -19,14 +19,14 @@ const nablSlice = createSlice({
     addSample: (state, action) => {
       if (
         state.samples.findIndex(
-          (sample) => sample.sampleId === action.payload.sampleId
+          (sample) => sample.sampleCode === action.payload.sampleCode
         ) === -1
       )
         state.samples.push(action.payload);
     },
     deleteSample: (state, action) => {
       state.samples = state.samples.filter(
-        (sample) => sample.sampleId !== action.payload
+        (sample) => sample.sampleCode === action.payload.sampleCode
       );
     },
     updateSampleState: (state, action) => {

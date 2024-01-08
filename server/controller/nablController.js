@@ -11,7 +11,7 @@ import {
 import evaluateData from "../utils/evaluateData.js";
 
 // POST /createSample
-// Authorised only
+// Authenticated only
 export const createSample = expressAsyncHandler(async (request, response) => {
   const {
     sampleReceivedOn,
@@ -51,10 +51,12 @@ export const createSample = expressAsyncHandler(async (request, response) => {
       isReported: false,
     });
     try {
+      const changeId =
+        sampleType === "soil" ? "currentSoilId" : "currentWaterId";
       await NABLData.updateOne(
-        { currentId: newSample.sampleId - 1 },
+        { [changeId]: newSample.sampleId - 1 },
         {
-          currentId: newSample.sampleId,
+          [changeId]: newSample.sampleId,
         }
       );
     } catch (error) {
@@ -67,7 +69,7 @@ export const createSample = expressAsyncHandler(async (request, response) => {
 });
 
 // PUT /updateSample
-// Authorised only
+// Authenticated only
 export const updateSample = expressAsyncHandler(async (request, response) => {
   const { sampleCode, updateData } = request.body;
   try {
@@ -81,7 +83,7 @@ export const updateSample = expressAsyncHandler(async (request, response) => {
 });
 
 // GET /getSamples
-// Authorised only
+// Authenticated only
 export const getSamples = expressAsyncHandler(async (request, response) => {
   try {
     const samples = await Sample.find({}).select("-_id -__v");
@@ -92,7 +94,7 @@ export const getSamples = expressAsyncHandler(async (request, response) => {
 });
 
 // GET /evaluateTestData
-// Authorised only
+// Authenticated only
 export const evaluateTestData = expressAsyncHandler(
   async (request, response) => {
     const { paramId, paramType, values } = request.body;
@@ -110,7 +112,7 @@ export const evaluateTestData = expressAsyncHandler(
 );
 
 // POST /createReport
-// Authorised only
+// Authenticated only
 export const createReport = expressAsyncHandler(async (request, response) => {
   const { sampleCode, reportData, analysisStartedOn, analysisEndedOn } =
     request.body;
@@ -135,39 +137,41 @@ export const createReport = expressAsyncHandler(async (request, response) => {
         analysisEndedOn,
       });
       reports.push(report);
-      try {
-        const sample = await Sample.findOne({ sampleCode: sampleCode });
-        const remainingSets = sample.analysisSet
-          .filter((ele) => !ele.isReported)
-          .map((ele) => ele.name);
-        var isSampleReported = remainingSets.every(
-          (val, index) => val === keys[index]
-        );
-        var analysisSet = sample.analysisSet;
-        const idx = analysisSet.findIndex((ele) => ele.name === set);
-        analysisSet[idx] = { name: set, isReported: true };
-      } catch (error) {
-        throw new Error(error);
-      }
-      try {
-        if (isSampleReported) {
-          await Sample.updateOne(
-            { sampleCode: sampleCode },
-            { isReported: true, analysisSet: analysisSet },
-          );
-        } else {
-          await Sample.updateOne(
-            { sampleCode: sampleCode },
-            { analysisSet: analysisSet },
-          );
-        }
-      } catch (error) {
-        throw new Error(error);
-      }
     } catch (error) {
       throw new Error(error);
     }
   }
+  const sample = await Sample.findOne({ sampleCode: sampleCode });
+  const remainingSets = sample.analysisSet
+    .filter((ele) => !ele.isReported)
+    .map((ele) => ele.name);
+  const isSampleReported = remainingSets.every(
+    (val, index) => val === keys[index]
+  );
+  const analysisSet = sample.analysisSet;
+  for (let index = 0; index < keys.length; index++) {
+    const set = keys[index];
+    console.log(set);
+    const idx = analysisSet.findIndex((ele) => ele.name === set);
+    analysisSet[idx] = { name: set, isReported: true };
+    console.log(analysisSet);
+  }
+  try {
+    if (isSampleReported) {
+      await Sample.updateOne(
+        { sampleCode: sampleCode },
+        { isReported: true, analysisSet: analysisSet }
+      );
+    } else {
+      await Sample.updateOne(
+        { sampleCode: sampleCode },
+        { analysisSet: analysisSet }
+      );
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+  console.log(isSampleReported);
   response.status(200).json({
     reports: reports,
     analysisSet: analysisSet,
@@ -176,7 +180,7 @@ export const createReport = expressAsyncHandler(async (request, response) => {
 });
 
 // GET /getReports
-// Authorised only
+// Authenticated only
 export const getReports = expressAsyncHandler(async (request, response) => {
   try {
     const reports = await Report.find({}).select("-__v");
@@ -187,7 +191,7 @@ export const getReports = expressAsyncHandler(async (request, response) => {
 });
 
 // PUT /updateReport
-// Authorised only
+// Authenticated only
 export const updateReport = expressAsyncHandler(async (request, response) => {
   const { sampleCode, analysisSet, reportData } = request.body;
   try {
@@ -267,7 +271,7 @@ export const updateNablData = expressAsyncHandler(async (request, response) => {
 });
 
 // POST /createParam
-// Admin only
+// Superadmin only
 export const createParameter = expressAsyncHandler(
   async (request, response) => {
     const {
@@ -325,7 +329,7 @@ export const createParameter = expressAsyncHandler(
 );
 
 // GET /getParams
-// Authorised only
+// Authenticated only
 export const getParams = expressAsyncHandler(async (request, response) => {
   try {
     const soilParameters = await NABLSoilParameters.find({}).select(
@@ -348,7 +352,7 @@ export const getParams = expressAsyncHandler(async (request, response) => {
 });
 
 // PUT /updateParameter
-// Admin only
+// Superadmin only
 export const updateParameter = expressAsyncHandler(
   async (request, response) => {
     const {
@@ -390,7 +394,7 @@ export const updateParameter = expressAsyncHandler(
 );
 
 // POST /createParameterSet
-// Admin only
+// Superadmin only
 export const createParameterSet = expressAsyncHandler(
   async (request, response) => {
     const { name, type, parameters } = request.body;
@@ -404,7 +408,7 @@ export const createParameterSet = expressAsyncHandler(
 );
 
 // POST /setId
-// Admin only
+// Superadmin only
 // export const setId = expressAsyncHandler(async (request, response) => {
 //   const { newId } = request.body;
 //   const todayYear = new Date().getFullYear();

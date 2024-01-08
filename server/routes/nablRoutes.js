@@ -1,7 +1,7 @@
 import express from "express";
 
 import { protect } from "../middleware/authMiddleware.js";
-import { admin } from "../middleware/adminMiddleware.js";
+import { admin } from "../middleware/superAdminMiddleware.js";
 
 import {
   authoriseReport,

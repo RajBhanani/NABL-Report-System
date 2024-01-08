@@ -2,7 +2,8 @@ import mongoose, { set } from "mongoose";
 import { generateSampleCode, generateULR } from "../utils/generateNABLCodes.js";
 
 const nablDataSchema = mongoose.Schema({
-  currentId: { type: Number, required: true },
+  currentSoilId: { type: Number, required: true },
+  currentWaterId: { type: Number, required: true },
   currentYear: { type: Number, required: true },
   currentSoilParamId: { type: Number, required: true },
   currentWaterParamId: { type: Number, required: true },
@@ -130,15 +131,21 @@ sampleSchema.pre("save", async function (next) {
   this.sampleReceivedOn = !this.sampleReceivedOn
     ? new Date()
     : this.sampleReceivedOn;
-  let { currentId, currentYear } = (await NABLData.find())[0];
+  let { currentSoilId, currentWaterId, currentYear } = (
+    await NABLData.find()
+  )[0];
+  // const todayYear = new Date(2025, 1, 1).getFullYear();
   const todayYear = new Date().getFullYear();
+  const changeId = this.sampleType === "soil" ? "currentSoilId" : "currentWaterId";
+  const currentId = this.sampleType === "soil" ? currentSoilId : currentWaterId;
   if (currentYear !== todayYear) {
     if (currentYear + 1 === todayYear) {
       try {
         await NABLData.updateOne(
-          { currentId: currentId },
+          { [changeId]: currentId },
           {
-            currentId: 0,
+            currentSoilId: 0,
+            currentWaterId: 0,
             currentYear: todayYear,
           }
         );

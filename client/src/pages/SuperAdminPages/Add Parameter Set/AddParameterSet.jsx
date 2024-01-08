@@ -127,7 +127,7 @@ const AddParameterSet = () => {
         <FormGroup>
           <Grid container>
             {parameters.map((param) => (
-              <Grid item key={param.paramId} lg={4} md={6} sm={6}>
+              <Grid item key={param.paramId} lg={5} md={6} sm={6}>
                 <FormControlLabel
                   label={<WhiteText>{param.paramName}</WhiteText>}
                   control={

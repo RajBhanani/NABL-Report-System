@@ -128,9 +128,6 @@ const Login = () => {
           }}
           width="80%"
         />
-        {/* <Box style={{ width: "80%", marginTop: "-1%" }}>
-          <Typography>Forgot Password?</Typography>
-        </Box> */}
         <CustomButton
           text="Login"
           color="white"
