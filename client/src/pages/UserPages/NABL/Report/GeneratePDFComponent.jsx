@@ -1,11 +1,9 @@
 import PropTypes from "prop-types";
 import { Box } from "@mui/material";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import * as pdfMake from "pdfmake/build/pdfmake";
 import CustomButton from "../../../../components/stickers/CustomButton";
-import { Link } from "react-router-dom";
 
 import { companyLogo, nablLogo } from "../../../../constants/images";
 import { useGetNablDataMutation } from "../../../../redux/slices/api slices/nablApiSlice";
@@ -190,7 +188,7 @@ const createDocDefination = (sample, report, parameters, nablData) => {
         columns: [
           {
             text: "Analysed By",
-            style: "sign",
+            style: "bold",
             margin: [0, 20, 0, 0],
           },
           {
@@ -203,12 +201,12 @@ const createDocDefination = (sample, report, parameters, nablData) => {
       {
         columns: [
           {
-            text: "K.S. Maniyar",
-            style: "sign",
+            text: `${nablData.analysedBy}`,
+            style: "bold",
             margin: [0, 40, 0, 0],
           },
           {
-            text: "Mr D.A. Vyas",
+            text: `${nablData.approvedBy}`,
             style: "sign",
             margin: [0, 40, 0, 0],
           },
@@ -216,7 +214,7 @@ const createDocDefination = (sample, report, parameters, nablData) => {
       },
       {
         columns: [
-          { text: "(Chemist)", width: "*", alignment: "center" },
+          { text: "(Chemist)" },
           {
             text: "Quality Manager\n(Authorised Signatory)",
             width: "*",
@@ -335,7 +333,6 @@ const GeneratePDFComponent = ({ sampleCode, analysisSet }) => {
 
   let { samples, parameters, reports } = useSelector((state) => state.nabl);
   const [getNablData] = useGetNablDataMutation();
-  const [pdfUrl, setPdfUrl] = useState();
 
   const generatePdf = async () => {
     const sample = samples.filter(

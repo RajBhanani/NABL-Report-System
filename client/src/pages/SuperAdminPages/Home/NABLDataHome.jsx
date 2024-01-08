@@ -199,10 +199,13 @@ const NABLDataHome = () => {
                         <WhiteText>{currNablData.currentSoilId}</WhiteText>
                       ) : (
                         <WhiteTextField
-                          label="Current Sample ID"
+                          label="Current Soil Sample ID"
                           defaultValue={String(currNablData.currentSoilId)}
                           onChange={(e) =>
-                            handleChange("currentSoilId", Number(e.target.value))
+                            handleChange(
+                              "currentSoilId",
+                              Number(e.target.value)
+                            )
                           }
                         />
                       )}
@@ -217,10 +220,49 @@ const NABLDataHome = () => {
                         <WhiteText>{currNablData.currentWaterId}</WhiteText>
                       ) : (
                         <WhiteTextField
-                          label="Current Sample ID"
+                          label="Current Water Sample ID"
                           defaultValue={String(currNablData.currentWaterId)}
                           onChange={(e) =>
-                            handleChange("currentWaterId", Number(e.target.value))
+                            handleChange(
+                              "currentWaterId",
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <WhiteText>Analysed By</WhiteText>
+                    </TableCell>
+                    <TableCell>
+                      {!isEditing ? (
+                        <WhiteText>{currNablData.analysedBy}</WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Analysed By"
+                          defaultValue={String(currNablData.analysedBy)}
+                          onChange={(e) =>
+                            handleChange("analysedBy", e.target.value)
+                          }
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <WhiteText>Approved By</WhiteText>
+                    </TableCell>
+                    <TableCell>
+                      {!isEditing ? (
+                        <WhiteText>{currNablData.approvedBy}</WhiteText>
+                      ) : (
+                        <WhiteTextField
+                          label="Approved By"
+                          defaultValue={String(currNablData.approvedBy)}
+                          onChange={(e) =>
+                            handleChange("approvedBy", e.target.value)
                           }
                         />
                       )}

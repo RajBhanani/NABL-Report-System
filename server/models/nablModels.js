@@ -9,6 +9,8 @@ const nablDataSchema = mongoose.Schema({
   currentWaterParamId: { type: Number, required: true },
   currentCertificationNumber: { type: Number, required: true },
   currentRevision: { type: String, required: true },
+  analysedBy: { type: String, required: true },
+  approvedBy: { type: String, required: true },
 });
 
 export const NABLData = mongoose.model("nabl data", nablDataSchema);
@@ -136,7 +138,8 @@ sampleSchema.pre("save", async function (next) {
   )[0];
   // const todayYear = new Date(2025, 1, 1).getFullYear();
   const todayYear = new Date().getFullYear();
-  const changeId = this.sampleType === "soil" ? "currentSoilId" : "currentWaterId";
+  const changeId =
+    this.sampleType === "soil" ? "currentSoilId" : "currentWaterId";
   const currentId = this.sampleType === "soil" ? currentSoilId : currentWaterId;
   if (currentYear !== todayYear) {
     if (currentYear + 1 === todayYear) {

@@ -21,6 +21,8 @@ const connectToDB = async () => {
             currentRevision: "01",
             currentSoilId: 0,
             currentWaterId: 0,
+            analysedBy: "K.S. Maniyar",
+            approvedBy: "Mr D.A. Vyas",
           },
         },
         { upsert: true }
