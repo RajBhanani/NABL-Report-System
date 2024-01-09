@@ -3,7 +3,7 @@ import expressAsyncHandler from "express-async-handler";
 
 import User from "../models/userModels.js";
 
-export const admin = expressAsyncHandler(async (request, response, next) => {
+export const superadmin = expressAsyncHandler(async (request, response, next) => {
   let token = request.cookies.token;
   if (token) {
     try {
@@ -12,7 +12,7 @@ export const admin = expressAsyncHandler(async (request, response, next) => {
         "-password"
       );
       if (request.user.role !== "superadmin") {
-        throw new Error("Not IT admin");
+        throw new Error("Not IT superadmin");
       }
       next();
     } catch (error) {

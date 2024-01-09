@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, styled } from "@mui/material";
+import { Alert, Box, Grid, Typography, styled } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -40,6 +40,9 @@ const OpenParameter = () => {
     parameter.paramTestMethod
   );
 
+  const [updated, setUpdated] = useState(null);
+  const [errorInUpdation, setErrorInUpdation] = useState(null);
+
   const handleSubmit = async () => {
     const filteredVariables = paramVariables.filter(
       (variable) => variable !== ""
@@ -47,15 +50,22 @@ const OpenParameter = () => {
     setParamVariables(filteredVariables);
     const trimmedFormula = paramFormula ? paramFormula.trim() : null;
     setParamFormula(trimmedFormula);
-    await updateParam({
-      paramId: parameter.paramId,
-      paramType: type,
-      paramName: paramName || null,
-      paramUnit: paramUnit || null,
-      paramTestMethod: paramTestMethod || null,
-      paramFormula: trimmedFormula,
-      paramVariables: filteredVariables,
-    }).unwrap();
+    try {
+      await updateParam({
+        paramId: parameter.paramId,
+        paramType: type,
+        paramName: paramName || null,
+        paramUnit: paramUnit || null,
+        paramTestMethod: paramTestMethod || null,
+        paramFormula: trimmedFormula,
+        paramVariables: filteredVariables,
+      }).unwrap();
+      setUpdated("Updated");
+      setErrorInUpdation(null);
+    } catch (error) {
+      setErrorInUpdation(error?.data?.message || error?.error);
+      setUpdated(null);
+    }
   };
 
   return (
@@ -142,6 +152,8 @@ const OpenParameter = () => {
           </Grid>
         )}
       </Grid>
+      {updated && <Alert severity="success">{updated}</Alert>}
+      {errorInUpdation && <Alert severity="error">{errorInUpdation}</Alert>}
       <CustomButton
         text="Update Parameter"
         color="white"

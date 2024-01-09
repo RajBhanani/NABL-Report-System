@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import {
+  Alert,
   Box,
   FormControl,
   FormControlLabel,
@@ -44,7 +45,7 @@ const RegisterBackgroundBox = styled(Box)({
 
 const RegisterBox = styled(Box)({
   width: "25%",
-  height: "75%",
+  // height: "75%",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -75,12 +76,19 @@ const Register = () => {
   const [role, setRole] = useState();
   const [register] = useRegisterMutation();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [created, setCreated] = useState(false);
+  const [registerError, setRegisterError] = useState(null);
+
   const handleSubmit = async () => {
+    setIsLoading(true);
     try {
       const response = await register({ name, email, password, role }).unwrap();
-      console.log(response.message);
+      setCreated(response.message);
+      setIsLoading(false);
     } catch (error) {
-      console.log(error?.data?.message || error.error);
+      setRegisterError(error?.data?.message || error.error);
+      setIsLoading(false);
     }
   };
 
@@ -157,8 +165,11 @@ const Register = () => {
             />
           </FormGroup>
         </FormControl>
+        {created && <Alert severity="success">{created}</Alert>}
+        {registerError && <Alert severity="error">{registerError}</Alert>}
         <CustomButton
-          text="Register"
+          text={isLoading ? "Loading..." : "Register"}
+          disabled={isLoading}
           color="white"
           borderColor="white"
           hoverBackground="rgba(255,255,255,0.3)"

@@ -1,7 +1,7 @@
 import express from "express";
 
-import { protect } from "../middleware/authMiddleware.js";
-import { admin } from "../middleware/superAdminMiddleware.js";
+import { admin, protect } from "../middleware/authMiddleware.js";
+import { superadmin } from "../middleware/superAdminMiddleware.js";
 
 import {
   authoriseReport,
@@ -16,7 +16,6 @@ import {
   getSamples,
   updateNablData,
   updateParameter,
-  // setId,
   updateReport,
   updateSample,
 } from "../controller/nablController.js";
@@ -29,15 +28,14 @@ nablRouter.get("/getSamples", protect, getSamples);
 nablRouter.get("/evaluateTestData", protect, evaluateTestData);
 nablRouter.post("/createReport", protect, createReport);
 nablRouter.put("/updateReport", protect, updateReport);
-nablRouter.put("/authoriseReport", protect, authoriseReport);
+nablRouter.put("/authoriseReport", admin, authoriseReport);
 nablRouter.get("/getReports", protect, getReports);
 nablRouter.get("/getParams", protect, getParams);
 nablRouter.get("/getNablData", protect, getNablData);
 
-// nablRouter.post("/setId", admin, setId);
-nablRouter.put("/updateNablData", admin, updateNablData);
-nablRouter.post("/createParam", admin, createParameter);
-nablRouter.put("/updateParam", admin, updateParameter);
-nablRouter.post("/createParamSet", admin, createParameterSet);
+nablRouter.put("/updateNablData", superadmin, updateNablData);
+nablRouter.post("/createParam", superadmin, createParameter);
+nablRouter.put("/updateParam", superadmin, updateParameter);
+nablRouter.post("/createParamSet", superadmin, createParameterSet);
 
 export default nablRouter;

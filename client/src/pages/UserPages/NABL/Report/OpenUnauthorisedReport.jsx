@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Grid,
   Typography,
@@ -84,7 +85,7 @@ const OpenUnauthorisedReport = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleUpdate = async () => {
     setIsEditing(false);
     const { testResults } = await updateReport({
       sampleCode: sample.sampleCode,
@@ -101,7 +102,30 @@ const OpenUnauthorisedReport = () => {
     );
   };
 
-  // const { role } = useSelector((state) => state.auth).userInfo;
+  const [authorised, setAuthorised] = useState(null);
+  const [errorInAuthorisation, setErrorInAuthorisation] = useState(null);
+
+  const handleAuthorise = async () => {
+    try {
+      await authoriseReport({
+        sampleCode: report.sampleCode,
+        analysisSet: analysisSet,
+      }).unwrap();
+      dispatch(
+        updateReportState({
+          sampleCode: report.sampleCode,
+          analysisSet: report.analysisSet,
+          field: "isAuthorised",
+          value: true,
+        })
+      );
+      setAuthorised("Authorised");
+    } catch (error) {
+      setErrorInAuthorisation(error?.data?.message || error?.error);
+    }
+  };
+
+  const { role } = useSelector((state) => state.auth).userInfo;
 
   return (
     <OpenUnauthorisedReportBox>
@@ -227,48 +251,52 @@ const OpenUnauthorisedReport = () => {
                     hoverColor="green"
                     hoverBackground="none"
                     hoverborderColor="green"
-                    onClick={handleSubmit}
+                    onClick={handleUpdate}
                   />
                 </>
               ) : (
-                <>
-                  <CustomButton
-                    text="Edit"
-                    width="100px"
-                    color="white"
-                    borderColor="white"
-                    hoverBackground="rgba(255,255,255,0.3)"
-                    hoverborderColor="white"
-                    onClick={() => setIsEditing(true)}
-                  />
-                  {
+                <Box
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                  }}
+                >
+                  {authorised && <Alert severity="success">{authorised}</Alert>}
+                  {errorInAuthorisation && (
+                    <Alert severity="error">{errorInAuthorisation}</Alert>
+                  )}
+                  <Box
+                    style={{
+                      display: "flex",
+                      gap: "20px",
+                      justifyContent: "center",
+                    }}
+                  >
                     <CustomButton
-                      text="Authorise"
+                      text="Edit"
                       width="100px"
                       color="white"
-                      background="darkblue"
                       borderColor="white"
-                      hoverColor="darkblue"
-                      hoverBackground="none"
-                      hoverborderColor="darkblue"
-                      onClick={() => {
-                        authoriseReport({
-                          sampleCode: report.sampleCode,
-                          analysisSet: analysisSet,
-                        });
-                        dispatch(
-                          updateReportState({
-                            sampleCode: report.sampleCode,
-                            analysisSet: report.analysisSet,
-                            field: "isAuthorised",
-                            value: true,
-                          })
-                        );
-                        navigate(`../authorised/${report.sampleCode}?analysisSet=${report.analysisSet}`);
-                      }}F
+                      hoverBackground="rgba(255,255,255,0.3)"
+                      hoverborderColor="white"
+                      onClick={() => setIsEditing(true)}
                     />
-                  }
-                </>
+                    {(role === "admin" || role === "superadmin") && (
+                      <CustomButton
+                        text="Authorise"
+                        width="100px"
+                        color="white"
+                        background="darkblue"
+                        borderColor="white"
+                        hoverColor="darkblue"
+                        hoverBackground="none"
+                        hoverborderColor="darkblue"
+                        onClick={handleAuthorise}
+                      />
+                    )}
+                  </Box>
+                </Box>
               )}
             </Box>
           }

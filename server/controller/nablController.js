@@ -116,8 +116,10 @@ export const evaluateTestData = expressAsyncHandler(
 export const createReport = expressAsyncHandler(async (request, response) => {
   const { sampleCode, reportData, analysisStartedOn, analysisEndedOn } =
     request.body;
-  if (Object.keys(reportData).length === 0)
-    response.status(400).json({ message: "No data provided" });
+  if (Object.keys(reportData).length === 0) {
+    response.status(400);
+    throw new Error("No data provided");
+  }
   const keys = Object.keys(reportData);
   const reports = [];
   for (let index = 0; index < keys.length; index++) {
@@ -205,11 +207,11 @@ export const updateReport = expressAsyncHandler(async (request, response) => {
       analysisSet: analysisSet,
     });
     if (!currReport) {
-      response.status(404).json({ message: "Not found" });
+      response.status(404);
+      throw new Error("Not found");
     } else if (currReport.isAuthorised) {
-      response
-        .status(300)
-        .json({ message: "Report authorised, can't update." });
+      response.status(300);
+      throw new Error("Report authorised, can't update");
     } else {
       await Report.updateOne(
         {

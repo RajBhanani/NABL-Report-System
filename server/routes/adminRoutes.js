@@ -5,11 +5,11 @@ import {
   verifyAdminLogin,
 } from "../controller/adminController.js";
 
-import { admin } from "../middleware/superAdminMiddleware.js";
+import { superadmin } from "../middleware/superAdminMiddleware.js";
 
 const adminRouter = express.Router();
 
-adminRouter.post("/register", admin, userRegister);
-adminRouter.get("/verify", admin, verifyAdminLogin);
+adminRouter.post("/register", superadmin, userRegister);
+adminRouter.get("/verify", superadmin, verifyAdminLogin);
 
 export default adminRouter;

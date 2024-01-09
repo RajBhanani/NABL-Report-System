@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Alert,
   Box,
   FormControl,
   FormControlLabel,
@@ -53,6 +54,9 @@ const AddParameter = () => {
     setParamVariables(paramVariables);
   };
 
+  const [created, setCreated] = useState(null);
+  const [errorInCreation, setErrorInCreation] = useState(null);
+
   const handleSubmit = async () => {
     const filteredVariables = paramVariables.filter(
       (variable) => variable !== ""
@@ -67,9 +71,11 @@ const AddParameter = () => {
         paramFormula: paramFormula || null,
         paramTestMethod: paramTestMethod,
       }).unwrap();
-      console.log(message);
+      setCreated(message);
+      setErrorInCreation(null);
     } catch (error) {
-      console.log(error);
+      setErrorInCreation(error?.data?.message || error.message);
+      setCreated(null);
     }
   };
 
@@ -152,6 +158,8 @@ const AddParameter = () => {
           />
         </Grid>
       </Grid>
+      {created && <Alert severity="success">{created}</Alert>}
+      {errorInCreation && <Alert severity="error">{errorInCreation}</Alert>}
       <CustomButton
         text="Create Parameter"
         color="white"

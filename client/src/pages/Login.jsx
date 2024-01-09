@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Typography, styled } from "@mui/material";
+import { Alert, Box, Typography, styled } from "@mui/material";
 
 import {
   useLoginMutation,
@@ -14,7 +14,6 @@ import PasswordTextField from "../components/stickers/PasswordTextField";
 import CustomButton from "../components/stickers/CustomButton";
 
 import theme from "../constants/theme";
-
 
 const bgLink =
   "https://cdn.pixabay.com/photo/2018/02/27/14/58/crystal-grid-3185671_1280.png";
@@ -92,13 +91,21 @@ const Login = () => {
     if (userInfo) verifyUserToken();
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+
   const handleSubmit = async () => {
+    setIsLoading(true);
+    setLoginError(null);
     try {
       const response = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...response }));
+      setLoginError(null);
       navigate("/home");
+      setIsLoading(false);
     } catch (error) {
-      console.log(error?.data?.message || error.error);
+      setIsLoading(false);
+      setLoginError(error?.data?.message || error.error);
     }
   };
 
@@ -128,8 +135,10 @@ const Login = () => {
           }}
           width="80%"
         />
+        {loginError && <Alert severity="error">{loginError}</Alert>}
         <CustomButton
-          text="Login"
+          text={isLoading ? "Loading..." : "Login"}
+          disabled={isLoading}
           color="white"
           borderColor="white"
           hoverBackground="rgba(255,255,255,0.3)"

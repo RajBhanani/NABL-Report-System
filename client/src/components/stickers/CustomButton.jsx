@@ -11,6 +11,7 @@ const CustomButton = ({
   hoverborderColor,
   onClick,
   width,
+  disabled,
 }) => {
   CustomButton.propTypes = {
     text: PropTypes.string.isRequired,
@@ -22,6 +23,7 @@ const CustomButton = ({
     hoverborderColor: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     width: PropTypes.string,
+    disabled: PropTypes.bool,
   };
 
   return (
@@ -41,6 +43,7 @@ const CustomButton = ({
         },
       }}
       onClick={onClick}
+      disabled={disabled}
     >
       {text}
     </Button>

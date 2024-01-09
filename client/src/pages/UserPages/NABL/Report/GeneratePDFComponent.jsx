@@ -7,6 +7,7 @@ import CustomButton from "../../../../components/stickers/CustomButton";
 
 import { companyLogo, nablLogo } from "../../../../constants/images";
 import { useGetNablDataMutation } from "../../../../redux/slices/api slices/nablApiSlice";
+import { useState } from "react";
 
 const pdfFonts = {
   Roboto: {
@@ -334,7 +335,9 @@ const GeneratePDFComponent = ({ sampleCode, analysisSet }) => {
   let { samples, parameters, reports } = useSelector((state) => state.nabl);
   const [getNablData] = useGetNablDataMutation();
 
-  const generatePdf = async () => {
+  const [pdf, setPdf] = useState();
+
+  const generateDocDefinition = async () => {
     const sample = samples.filter(
       (sample) => sample.sampleCode === sampleCode
     )[0];
@@ -359,7 +362,20 @@ const GeneratePDFComponent = ({ sampleCode, analysisSet }) => {
       parameters,
       nablData
     );
+    return {
+      docDefination: docDefination,
+      name: `${sample.sampleCode}_${report.analysisSet}`,
+    };
+  };
+
+  const openPdf = async () => {
+    const { docDefination } = await generateDocDefinition();
     pdfMake.createPdf(docDefination, null, pdfFonts).open();
+  };
+
+  const downloadPdf = async () => {
+    const { docDefination, name } = await generateDocDefinition();
+    pdfMake.createPdf(docDefination, null, pdfFonts).download(name);
   };
 
   return (
@@ -377,7 +393,15 @@ const GeneratePDFComponent = ({ sampleCode, analysisSet }) => {
         borderColor="white"
         hoverBackground="rgba(255,255,255,0.3)"
         hoverborderColor="white"
-        onClick={generatePdf}
+        onClick={openPdf}
+      />
+      <CustomButton
+        text="Download PDF"
+        color="white"
+        borderColor="white"
+        hoverBackground="rgba(255,255,255,0.3)"
+        hoverborderColor="white"
+        onClick={downloadPdf}
       />
     </Box>
   );
