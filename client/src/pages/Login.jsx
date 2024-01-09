@@ -85,7 +85,7 @@ const Login = () => {
           ? navigate("/home")
           : navigate("/");
       } catch (error) {
-        console.log(error);
+        setLoginError(error);
       }
     };
     if (userInfo) verifyUserToken();

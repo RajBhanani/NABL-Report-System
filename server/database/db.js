@@ -31,7 +31,7 @@ const connectToDB = async () => {
         console.log("Date initialised");
       }
     } catch (error) {
-      console.log("Error in insert date:", error.message);
+      console.log("Error in initialise data:", error.message);
     }
   } catch (error) {
     console.log("Error connecting to the database:", error.message);

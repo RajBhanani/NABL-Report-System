@@ -153,10 +153,8 @@ export const createReport = expressAsyncHandler(async (request, response) => {
   const analysisSet = sample.analysisSet;
   for (let index = 0; index < keys.length; index++) {
     const set = keys[index];
-    console.log(set);
     const idx = analysisSet.findIndex((ele) => ele.name === set);
     analysisSet[idx] = { name: set, isReported: true };
-    console.log(analysisSet);
   }
   try {
     if (isSampleReported) {
@@ -173,7 +171,6 @@ export const createReport = expressAsyncHandler(async (request, response) => {
   } catch (error) {
     throw new Error(error);
   }
-  console.log(isSampleReported);
   response.status(200).json({
     reports: reports,
     analysisSet: analysisSet,

@@ -315,7 +315,6 @@ const OpenSample = () => {
               hoverBackground="none"
               hoverborderColor="green"
               width="30%"
-              // onClick={() => console.log(reportData)}
               onClick={handleSubmit}
             />
           </Box>
